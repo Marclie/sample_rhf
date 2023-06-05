@@ -1,0 +1,33 @@
+
+# PYTHONPATH must include directory above plugin directory.
+#     Define either externally or here, then import plugin.
+sys.path.insert(0, './..')
+import sample_rhf
+
+molecule {
+O
+H 1 R
+H 1 R 2 A
+
+R = .9
+A = 104.5
+# add this line!
+symmetry c1
+}
+
+set {
+  scf_type df
+  basis sto-3g
+  reference rhf
+  e_convergence 1e-8
+  d_convergence 1e-8
+}
+
+memory 5 gb
+ref_en = energy('scf')
+my_en = energy('sample_rhf')
+
+print('    Reference energy: ', ref_en)
+print('           My energy: ', my_en)
+print('          Difference: ', ref_en - my_en)
+
